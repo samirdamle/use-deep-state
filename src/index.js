@@ -1,21 +1,13 @@
 import * as React from 'react'
 
-export const useMyHook = () => {
-  let [{
-    counter
-  }, setState] = React.useState({
-    counter: 0
-  })
+const clone = obj => JSON.parse(JSON.stringify(obj))
 
-  React.useEffect(() => {
-    let interval = window.setInterval(() => {
-      counter++
-      setState({counter})
-    }, 1000)
-    return () => {
-      window.clearInterval(interval)
+export const useDeepState = (initialState = {}) => {
+    let [state, _setState] = React.useState(initialState)
+    const setState = updates => {
+        _setState((prevState) => {
+            return { ...clone(prevState), ...updates }
+        })
     }
-  }, [])
-
-  return counter
+    return [state, setState]
 }

@@ -1,5 +1,17 @@
-/* body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-} */
+body {
+    margin: 0;
+    padding: 40px;
+    font-family: sans-serif;
+}
+
+.btn-link {
+    color: blue;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.list-item {
+    margin-bottom: 10px;
+}

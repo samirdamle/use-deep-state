@@ -15,10 +15,10 @@ npm install --save use-deep-state
 ```jsx
 import React, { Component } from 'react'
 
-import { useMyHook } from 'use-deep-state'
+import { useDeepState } from 'use-deep-state'
 
 const Example = () => {
-  const example = useMyHook()
+  const example = useDeepState()
   return (
     <div>{example}</div>
   )
