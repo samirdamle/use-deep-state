@@ -110,9 +110,9 @@ const App = () => {
                 </button> &nbsp;
                 <button
                     onClick={() => {
-                        setState(['users', 0, 'name'], 'Alexandra Stevenson')
+                        setState(['users', 0, 'address', 'city'], 'Oakland')
                     }}>
-                    Change Name of User 1
+                    Change City of User 1
                 </button>
             </div>
             <br />
