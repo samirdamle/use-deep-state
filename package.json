@@ -6,6 +6,9 @@
     "license": "MIT",
     "repository": "samirdamle/use-deep-state",
     "main": "dist/index.js",
+    "files": [
+        "src/index.js"
+    ],
     "module": "dist/index.es.js",
     "jsnext:main": "dist/index.es.js",
     "engines": {
