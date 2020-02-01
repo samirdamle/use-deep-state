@@ -73,6 +73,17 @@ const App = () => {
     const selectUser = selectedUserIndex => {
         setState({ selectedUserIndex })
     }
+    const newUser = {
+        name: 'Ellen White',
+        age: 19,
+        address: {
+            line1: '345 Rodeo Dr.',
+            line2: '',
+            city: 'Beverly Hills',
+            state: 'CA',
+            zip: '90034',
+        },
+    }
     return (
         <div>
             <h2>Select User</h2>
@@ -88,6 +99,21 @@ const App = () => {
                         </button>
                     </div>
                 ))}
+            </div>
+            <br />
+            <div>
+                <button
+                    onClick={() => {
+                        setState(['users', state.users.length], newUser)
+                    }}>
+                    Add User
+                </button> &nbsp;
+                <button
+                    onClick={() => {
+                        setState(['users', 0, 'name'], 'Alexandra Stevenson')
+                    }}>
+                    Change Name of User 1
+                </button>
             </div>
             <br />
             <DisplayUser user={state.users[state.selectedUserIndex]} />

@@ -14,14 +14,21 @@ npm install --save use-deep-state
 
 ```jsx
 import React, { Component } from 'react'
-
 import { useDeepState } from 'use-deep-state'
 
 const Example = () => {
-  const example = useDeepState()
-  return (
-    <div>{example}</div>
-  )
+    const initialState = {
+        user: {
+            name: 'John Smith',
+            age: 21
+        },
+        verified: false
+    }
+    const [state, setState] = useDeepState(initialState)
+    const verify = (evt) => { setState({ verified: true }) }
+    return (
+        <div>{state.user.name}, {state.user.age} <button onClick={verify}>Verify</button></div>
+    )
 }
 ```
 
