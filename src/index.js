@@ -3,10 +3,12 @@ import * as React from 'react'
 const clone = obj => JSON.parse(JSON.stringify(obj))
 
 const deepValue = (obj, pathArray, value) => {
+    // if value is not provided, deepValue will fetch and return the value of the node at the path given in pathArray
     const get = (obj, pathArray) => pathArray.reduce((item, prop) => (item && item[prop] ? item[prop] : null), obj)
     if (value === undefined) {
         return get(obj, pathArray)
     } else {
+        // if value is provided, deepValue will set the value of the node at the path given in pathArray
         const node = get(obj, pathArray.slice(0, -1))
         if (node && typeof node === 'object') {
             node[pathArray.slice(-1)] = value
