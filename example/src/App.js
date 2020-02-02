@@ -69,10 +69,12 @@ DisplayUser.propTypes = {
 }
 
 const App = () => {
-    const [state, setState] = useDeepState(initialState)
+    const { state, setState, setStateAt } = useDeepState(initialState)
+
     const selectUser = selectedUserIndex => {
         setState({ selectedUserIndex })
     }
+
     const newUser = {
         name: 'Ellen White',
         age: 19,
@@ -84,6 +86,7 @@ const App = () => {
             zip: '90034',
         },
     }
+
     return (
         <div>
             <h2>Select User</h2>
@@ -104,15 +107,16 @@ const App = () => {
             <div>
                 <button
                     onClick={() => {
-                        setState(['users', state.users.length], newUser)
+                        setStateAt(['users', state.users.length], newUser)
                     }}>
                     Add User
-                </button> &nbsp;
+                </button>{' '}
+                &nbsp;
                 <button
                     onClick={() => {
-                        setState(['users', 0, 'address', 'city'], 'Oakland')
+                        setStateAt(['users', 0, 'address', 'city'], 'Oakland')
                     }}>
-                    Change City of User 1
+                    Change City of First User
                 </button>
             </div>
             <br />
