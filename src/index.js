@@ -68,12 +68,22 @@ const deepDive = (obj = {}, path = [], value) => {
         // if value is provided, deepDive will set the value of the node at the path given in pathArray
         const [lastProp] = pathArray.slice(-1)
         const node = get(obj, pathArray.slice(0, -1))
+
+        /*const setValue = (node, prop, value) => {
+            if (Array.isArray(value)) {
+            } else {
+                node[prop] = value
+            }
+        }*/
+
         if (Array.isArray(node)) {
             if (typeof lastProp === 'number') {
                 node[lastProp] = value
             } else if (Array.isArray(lastProp)) {
                 if (Array.isArray(value)) {
                     node.forEach(item => lastProp.forEach((p, i) => (item[p] = value[i])))
+                } else if (typeof value === 'function') {
+                    node.forEach(item => lastProp.forEach((p, i) => (item[p] = value(p, i))))
                 } else {
                     node.forEach(item => lastProp.forEach(p => (item[p] = value)))
                 }
