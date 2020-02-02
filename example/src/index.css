@@ -4,7 +4,19 @@ body {
     font-family: sans-serif;
 }
 
+table {
+    border-collapse: collapse;
+    border-color: silver;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 5px 10px;
+}
+
 .btn-link {
+    padding: 0;
     color: blue;
     border: none;
     background: none;

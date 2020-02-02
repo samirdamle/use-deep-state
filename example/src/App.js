@@ -91,30 +91,56 @@ const App = () => {
         <div>
             <h2>Select User</h2>
             <div>
-                {state.users.map((user, userIndex) => (
-                    <div key={userIndex} className="list-item">
-                        <button
-                            className="btn-link"
-                            onClick={() => {
-                                selectUser(userIndex)
-                            }}>
-                            {user.name}
-                        </button>
-                    </div>
-                ))}
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Street Address</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Zip</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {state.users.map((user, userIndex) => {
+                            const address = user.address
+                            return (
+                                <tr key={userIndex}>
+                                    <td>
+                                        <button
+                                            className="btn-link"
+                                            onClick={() => {
+                                                selectUser(userIndex)
+                                            }}>
+                                            {user.name}
+                                        </button>
+                                    </td>
+                                    <td>{user.age}</td>
+                                    <td>
+                                        {address.line1} {address.line2}
+                                    </td>
+                                    <td>{address.city}</td>
+                                    <td>{address.state}</td>
+                                    <td>{address.zip}</td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
             </div>
             <br />
             <div>
                 <button
                     onClick={() => {
-                        console.log(getStateAt(['users', (user) => (user.age < 30)]))
+                        console.log(getStateAt(['users', user => user.age < 30]))
                     }}>
                     Get Users Below 30 Years
                 </button>
                 &nbsp;
                 <button
                     onClick={() => {
-                        console.log(getStateAt(['users', (user) => (user.age < 30), 'address', 'city']))
+                        console.log(getStateAt(['users', user => user.age < 30, 'address', 'city']))
                     }}>
                     Get Cities of Users Below 30 Years
                 </button>
