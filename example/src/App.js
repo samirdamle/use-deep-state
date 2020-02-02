@@ -18,7 +18,7 @@ const initialState = {
         },
         {
             name: 'Barbara Jones',
-            age: 21,
+            age: 31,
             address: {
                 line1: '300 Madison Ave.',
                 line2: '',
@@ -29,7 +29,7 @@ const initialState = {
         },
         {
             name: 'Chris Lee',
-            age: 36,
+            age: 16,
             address: {
                 line1: '1801 N. Miami Dr.',
                 line2: '',
@@ -47,6 +47,17 @@ const initialState = {
                 city: 'New York',
                 state: 'NY',
                 zip: '10023',
+            },
+        },
+        {
+            name: 'Ellen Anderson',
+            age: 15,
+            address: {
+                line1: '2917 North Ave.',
+                line2: '',
+                city: 'Washington',
+                state: 'DC',
+                zip: '20012',
             },
         },
     ],
@@ -76,8 +87,8 @@ const App = () => {
     }
 
     const newUser = {
-        name: 'Ellen White',
-        age: 19,
+        name: 'Frank White',
+        age: 24,
         address: {
             line1: '345 Rodeo Dr.',
             line2: '',
@@ -132,20 +143,6 @@ const App = () => {
             <div>
                 <button
                     onClick={() => {
-                        console.log(getStateAt(['users', user => user.age < 30]))
-                    }}>
-                    Get Users Below 30 Years
-                </button>
-                &nbsp;
-                <button
-                    onClick={() => {
-                        console.log(getStateAt(['users', user => user.age < 30, 'address', ['city', 'state']]))
-                    }}>
-                    Get Cities and States of Users Below 30 Years
-                </button>
-                &nbsp;
-                <button
-                    onClick={() => {
                         setStateAt(['users', state.users.length], newUser)
                     }}>
                     Add User
@@ -160,6 +157,28 @@ const App = () => {
             </div>
             <br />
             <DisplayUser user={state.users[state.selectedUserIndex]} />
+            <br />
+            <div className="">
+                <h3>Users below 30 years</h3>
+                <div className="">
+                    <code className="">getStateAt(['users', user => user.age &lt; 30])</code>
+                </div>
+                <br />
+                <div className="">
+                    <code className="">{JSON.stringify(getStateAt(['users', user => user.age < 30]))}</code>
+                </div>
+            </div>
+            <br />
+            <div className="">
+                <h3>Cities and states of users who are minors</h3>
+                <div className="">
+                    <code className="">getStateAt(['users', user => user.age &lt; 30, 'address', ['city', 'state']])</code>
+                </div>
+                <br />
+                <div className="">
+                    <code className="">{JSON.stringify(getStateAt(['users', user => user.age < 18, 'address', ['city', 'state']]))}</code>
+                </div>
+            </div>
             <br />
         </div>
     )
