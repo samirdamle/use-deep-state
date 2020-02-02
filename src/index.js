@@ -30,15 +30,43 @@ const deepDive = (obj = {}, path = [], value) => {
     const pathArray = typeof path === 'string' ? path.split('.') : Array.isArray(path) ? path : []
 
     // if value is not provided, deepDive will fetch and return the value of the node at the path given in pathArray
-    const get = (obj, pathArray) => pathArray.reduce((item, prop) => (item && item[prop] ? item[prop] : null), obj)
+    const get = (obj, pathArray) =>
+        pathArray.reduce((item, prop) => {
+            // console.log('item = ')
+            // console.log(item)
+            if (item && prop != null) {
+                // filter item array if prop is a filter callback
+                if (Array.isArray(item)) {
+                    if (typeof prop === 'function') {
+                        return item.filter(prop)
+                    } else if (typeof prop === 'number') {
+                        return item[prop]
+                    } else if (Array.isArray(prop)) {
+                        return prop.map(key => item[key])
+                    } else {
+                        return item.map(node => node[prop])
+                    }
+                }
+                return item[prop]
+            }
+            return null
+        }, obj)
 
     if (value === undefined) {
         return get(obj, pathArray)
     } else {
         // if value is provided, deepDive will set the value of the node at the path given in pathArray
+        const [lastProp] = pathArray.slice(-1)
         const node = get(obj, pathArray.slice(0, -1))
-        if (node && typeof node === 'object') {
-            node[pathArray.slice(-1)] = value
+        if (Array.isArray(node)) {
+            if (typeof lastProp === 'number') {
+                node[lastProp] = value
+            } else {
+                node.forEach(item => (item[lastProp] = value))
+            }
+            return obj
+        } else if (node && typeof node === 'object') {
+            node[lastProp] = value
             return obj
         } else {
             return null
@@ -57,15 +85,19 @@ const useDeepState = (initialState = {}) => {
         }
     }
 
-    const setStateAt = (path = {}, value = null) => {
+    const getStateAt = (path = '') => deepDive(clone(state), path)
+
+    const setStateAt = (path = '', value = null) => {
         if ((Array.isArray(path) || typeof path === 'string') && path.length > 0) {
-            const pathArray = [...path]
-            const newState = deepDive(clone(state), pathArray, value)
+            // const pathArray = [...path]
+            const newState = deepDive(clone(state), path, value)
+            // console.log('newState = ')
+            // console.log(newState)
             if (newState) _setState(newState)
         }
     }
 
-    return { state, setState, setStateAt }
+    return { state, setState, getStateAt, setStateAt }
 }
 
 export default useDeepState
