@@ -96,7 +96,7 @@ const App = () => {
         name: 'Frank White',
         age: 24,
         address: {
-            line1: '345 Rodeo Dr.',
+            line1: '345 Palms Ave.',
             line2: '',
             city: 'Beverly Hills',
             state: 'CA',

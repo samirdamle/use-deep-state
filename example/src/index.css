@@ -2,6 +2,7 @@ body {
     margin: 0;
     padding: 2rem;
     font-family: Arial, sans-serif;
+    font-size: 14px;
 }
 
 table {
@@ -22,7 +23,7 @@ button {
 }
 
 .d-flex {
-  display: flex;
+    display: flex;
 }
 
 .btn-link {
