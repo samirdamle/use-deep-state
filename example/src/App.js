@@ -67,10 +67,16 @@ const initialState = {
 const DisplayUser = ({ user }) => {
     return (
         <div>
-            <h1>{user.name}</h1>
+            <h2>{user.name}</h2>
             <div>Age: {user.age}</div>
+            <br />
             <div>
-                Address: {user.address.line1} {user.address.line2}, {user.address.city}, {user.address.state} {user.address.zip}
+                Address:
+                <div className="">
+                    {user.address.line1} {user.address.line2},
+                    <br />
+                    {user.address.city}, {user.address.state} {user.address.zip}
+                </div>
             </div>
         </div>
     )
@@ -100,44 +106,52 @@ const App = () => {
 
     return (
         <div>
-            <div>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Age</th>
-                            <th>Street Address</th>
-                            <th>City</th>
-                            <th>State</th>
-                            <th>Zip</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {state.users.map((user, userIndex) => {
-                            const address = user.address
-                            return (
-                                <tr key={userIndex}>
-                                    <td>
-                                        <button
-                                            className="btn-link"
-                                            onClick={() => {
-                                                selectUser(userIndex)
-                                            }}>
-                                            {user.name}
-                                        </button>
-                                    </td>
-                                    <td>{user.age}</td>
-                                    <td>
-                                        {address.line1} {address.line2}
-                                    </td>
-                                    <td>{address.city}</td>
-                                    <td>{address.state}</td>
-                                    <td>{address.zip}</td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
+            <h1>use-deep-state</h1>
+            <div className="">Custom React hook to manage a deeply nested state </div>
+            <br />
+            <div className="d-flex">
+                <div className="">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Street Address</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Zip</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {state.users.map((user, userIndex) => {
+                                const address = user.address
+                                return (
+                                    <tr key={userIndex}>
+                                        <td>
+                                            <button
+                                                className="btn-link"
+                                                onClick={() => {
+                                                    selectUser(userIndex)
+                                                }}>
+                                                {user.name}
+                                            </button>
+                                        </td>
+                                        <td>{user.age}</td>
+                                        <td>
+                                            {address.line1} {address.line2}
+                                        </td>
+                                        <td>{address.city}</td>
+                                        <td>{address.state}</td>
+                                        <td>{address.zip}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="" style={{ marginLeft: '1rem' }}>
+                    <DisplayUser user={state.users[state.selectedUserIndex]} />
+                </div>
             </div>
             <br />
             <div>
@@ -156,7 +170,6 @@ const App = () => {
                 </button>
             </div>
             <br />
-            <DisplayUser user={state.users[state.selectedUserIndex]} />
             <br />
             <div className="">
                 <h3>Users below 30 years</h3>

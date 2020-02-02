@@ -21,6 +21,10 @@ button {
     font-size: 1rem;
 }
 
+.d-flex {
+  display: flex;
+}
+
 .btn-link {
     padding: 0;
     color: blue;
