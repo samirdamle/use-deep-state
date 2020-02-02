@@ -1,7 +1,7 @@
 body {
     margin: 0;
-    padding: 40px;
-    font-family: sans-serif;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
 }
 
 table {
@@ -11,8 +11,14 @@ table {
 
 th,
 td {
+    padding: 0.5rem 1rem;
+    border: solid silver 1px;
     text-align: left;
-    padding: 5px 10px;
+}
+
+button {
+    padding: 0.5rem;
+    font-size: 1rem;
 }
 
 .btn-link {

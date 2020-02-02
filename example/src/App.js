@@ -89,7 +89,6 @@ const App = () => {
 
     return (
         <div>
-            <h2>Select User</h2>
             <div>
                 <table className="table">
                     <thead>
@@ -140,9 +139,9 @@ const App = () => {
                 &nbsp;
                 <button
                     onClick={() => {
-                        console.log(getStateAt(['users', user => user.age < 30, 'address', 'city']))
+                        console.log(getStateAt(['users', user => user.age < 30, 'address', ['city', 'state']]))
                     }}>
-                    Get Cities of Users Below 30 Years
+                    Get Cities and States of Users Below 30 Years
                 </button>
                 &nbsp;
                 <button

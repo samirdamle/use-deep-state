@@ -30,8 +30,12 @@ const deepDive = (obj = {}, path = [], value) => {
     const pathArray = typeof path === 'string' ? path.split('.') : Array.isArray(path) ? path : []
 
     // if value is not provided, deepDive will fetch and return the value of the node at the path given in pathArray
-    const get = (obj, pathArray) =>
-        pathArray.reduce((item, prop) => {
+    const get = (obj, pathArray) => {
+        /*const getValueAtProp = (node, prop) => {
+            return node[prop]
+        }*/
+
+        return pathArray.reduce((item, prop) => {
             // console.log('item = ')
             // console.log(item)
             if (item && prop != null) {
@@ -42,7 +46,12 @@ const deepDive = (obj = {}, path = [], value) => {
                     } else if (typeof prop === 'number') {
                         return item[prop]
                     } else if (Array.isArray(prop)) {
-                        return prop.map(key => item[key])
+                        return item.map(node =>
+                            prop.reduce((returnObj, key) => {
+                                returnObj[key] = node[key]
+                                return returnObj
+                            }, {}),
+                        )
                     } else {
                         return item.map(node => node[prop])
                     }
@@ -51,6 +60,7 @@ const deepDive = (obj = {}, path = [], value) => {
             }
             return null
         }, obj)
+    }
 
     if (value === undefined) {
         return get(obj, pathArray)
@@ -61,6 +71,12 @@ const deepDive = (obj = {}, path = [], value) => {
         if (Array.isArray(node)) {
             if (typeof lastProp === 'number') {
                 node[lastProp] = value
+            } else if (Array.isArray(lastProp)) {
+                if (Array.isArray(value)) {
+                    node.forEach(item => lastProp.forEach((p, i) => (item[p] = value[i])))
+                } else {
+                    node.forEach(item => lastProp.forEach(p => (item[p] = value)))
+                }
             } else {
                 node.forEach(item => (item[lastProp] = value))
             }
