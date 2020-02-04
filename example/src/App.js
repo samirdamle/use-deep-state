@@ -97,24 +97,33 @@ const Example = () => {
         },
         verified: false,
     }
+
     const { state, setState, getStateAt, setStateAt } = useDeepState(initialState)
+
     const verify = () => {
         setState({ verified: true })
     }
+
     const goPlay = () => {
         setStateAt(['user', 'activities', activity => activity.id === 'PLAY', 0, 'active'], true)
     }
+
+    const { user, verified } = state
+
+    const playing = getStateAt(['user', 'activities', activity => activity.id === 'PLAY', 0, 'active'])
+
     return (
         <div>
             <div>
-                {state.user.name}, {state.user.age} {state.verified && <span>&#10003; Verified</span>}
+                {user.name}, {user.age} {verified && <span> - Verified</span>}
             </div>
             <br />
             <div>
-                <button onClick={verify}>Verify</button> <button onClick={goPlay}>Go play!</button>
+                <button onClick={verify}>Verify</button>
+                <button onClick={goPlay}>Go play!</button>
             </div>
             <br />
-            <div>{getStateAt(['user', 'activities', activity => activity.id === 'PLAY', 0, 'active']) ? <span>Yay, let's play!</span> : <span>Need to work.</span>}</div>
+            <div>{playing ? <span>Yay, let's play!</span> : <span>Need to work.</span>}</div>
         </div>
     )
 }
