@@ -1,6 +1,6 @@
 {
     "name": "use-deep-state",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Custom React hook to manage complex state with a deeply nested object.",
     "author": "samirdamle",
     "license": "MIT",

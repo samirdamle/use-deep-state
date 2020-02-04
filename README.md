@@ -15,19 +15,37 @@ npm install --save use-deep-state
 ```jsx
 import React, { Component } from 'react'
 import { useDeepState } from 'use-deep-state'
-
 const Example = () => {
     const initialState = {
         user: {
-            name: 'John Smith',
-            age: 21
+            name: 'John Cleese',
+            age: 30,
+            activities: [
+                { id: 'WORK', name: 'Working', active: true },
+                { id: 'PLAY', name: 'Playing', active: false },
+            ],
         },
-        verified: false
+        verified: false,
     }
-    const [state, setState] = useDeepState(initialState)
-    const verify = (evt) => { setState({ verified: true }) }
+    const { state, setState, getStateAt, setStateAt } = useDeepState(initialState)
+    const verify = () => {
+        setState({ verified: true })
+    }
+    const goPlay = () => {
+        setStateAt(['user', 'activities', activity => activity.id === 'PLAY', 0, 'active'], true)
+    }
     return (
-        <div>{state.user.name}, {state.user.age} <button onClick={verify}>Verify</button></div>
+        <div>
+            <div>
+                {state.user.name}, {state.user.age} {state.verified && <span> - Verified</span>}
+            </div>
+            <br />
+            <div>
+                <button onClick={verify}>Verify</button> <button onClick={goPlay}>Go play!</button>
+            </div>
+            <br />
+            <div>{getStateAt(['user', 'activities', activity => activity.id === 'PLAY', 0, 'active']) ? <span>Yay, let's play!</span> : <span>Need to work.</span>}</div>
+        </div>
     )
 }
 ```

@@ -81,11 +81,11 @@ const deepDive = (obj = {}, path = [], value) => {
                 node[lastProp] = value
             } else if (Array.isArray(lastProp)) {
                 if (Array.isArray(value)) {
-                    node.forEach(item => lastProp.forEach((p, i) => (item[p] = value[i])))
+                    node.forEach(item => lastProp.forEach((prop, i) => (item[prop] = value[i])))
                 } else if (typeof value === 'function') {
-                    node.forEach(item => lastProp.forEach((p, i) => (item[p] = value(p, i))))
+                    node.forEach(item => lastProp.forEach((prop, i) => (item[prop] = value(prop, i))))
                 } else {
-                    node.forEach(item => lastProp.forEach(p => (item[p] = value)))
+                    node.forEach(item => lastProp.forEach(prop => (item[prop] = value)))
                 }
             } else {
                 node.forEach(item => (item[lastProp] = value))

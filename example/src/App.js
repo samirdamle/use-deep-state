@@ -85,6 +85,40 @@ DisplayUser.propTypes = {
     user: PropTypes.any,
 }
 
+const Example = () => {
+    const initialState = {
+        user: {
+            name: 'John Cleese',
+            age: 30,
+            activities: [
+                { id: 'WORK', name: 'Working', active: true },
+                { id: 'PLAY', name: 'Playing', active: false },
+            ],
+        },
+        verified: false,
+    }
+    const { state, setState, getStateAt, setStateAt } = useDeepState(initialState)
+    const verify = () => {
+        setState({ verified: true })
+    }
+    const goPlay = () => {
+        setStateAt(['user', 'activities', activity => activity.id === 'PLAY', 0, 'active'], true)
+    }
+    return (
+        <div>
+            <div>
+                {state.user.name}, {state.user.age} {state.verified && <span>&#10003; Verified</span>}
+            </div>
+            <br />
+            <div>
+                <button onClick={verify}>Verify</button> <button onClick={goPlay}>Go play!</button>
+            </div>
+            <br />
+            <div>{getStateAt(['user', 'activities', activity => activity.id === 'PLAY', 0, 'active']) ? <span>Yay, let's play!</span> : <span>Need to work.</span>}</div>
+        </div>
+    )
+}
+
 const App = () => {
     const { state, setState, getStateAt, setStateAt } = useDeepState(initialState)
 
@@ -193,6 +227,9 @@ const App = () => {
                 </div>
             </div>
             <br />
+            <div className="">
+                <Example />
+            </div>
         </div>
     )
 }
