@@ -1,9 +1,48 @@
 import React from 'react'
-import { PropTypes } from 'prop-types'
 import { useDeepState } from 'use-deep-state'
-import './index.css'
+// import './index.css'
 
-const initialState = {
+// Types definitions
+interface Address {
+    line1: string
+    line2: string
+    city: string
+    state: string
+    zip: string
+}
+
+interface User {
+    name: string
+    age: number
+    address: Address
+}
+
+interface Activity {
+    id: string
+    name: string
+    active: boolean
+}
+
+interface AppState {
+    users: User[]
+    selectedUserIndex: number
+}
+
+interface ExampleState {
+    user: {
+        name: string
+        age: number
+        activities: Activity[]
+    }
+    verified: boolean
+}
+
+// Props interfaces
+interface DisplayUserProps {
+    user: User
+}
+
+const initialState: AppState = {
     users: [
         {
             name: 'Adam Smith',
@@ -64,7 +103,7 @@ const initialState = {
     selectedUserIndex: 0,
 }
 
-const DisplayUser = ({ user }) => {
+const DisplayUser: React.FC<DisplayUserProps> = ({ user }) => {
     return (
         <div>
             <h2>{user.name}</h2>
@@ -72,7 +111,7 @@ const DisplayUser = ({ user }) => {
             <br />
             <div>
                 Address:
-                <div className="">
+                <div>
                     {user.address.line1} {user.address.line2},
                     <br />
                     {user.address.city}, {user.address.state} {user.address.zip}
@@ -81,12 +120,9 @@ const DisplayUser = ({ user }) => {
         </div>
     )
 }
-DisplayUser.propTypes = {
-    user: PropTypes.any,
-}
 
-const Example = () => {
-    const initialState = {
+const Example: React.FC = () => {
+    const initialExampleState: ExampleState = {
         user: {
             name: 'John Cleese',
             age: 30,
@@ -98,29 +134,34 @@ const Example = () => {
         verified: false,
     }
 
-    const { state, setState, getStateAt, setStateAt } = useDeepState(initialState)
+    const { state, setState, getStateAt, setStateAt } = useDeepState<ExampleState>(initialExampleState)
 
-    const verify = () => {
+    const verify = (): void => {
         setState({ verified: true })
     }
 
-    const goPlay = () => {
-        setStateAt(['user', 'activities', activity => activity.id === 'PLAY', 0, 'active'], true)
+    const goPlay = (): void => {
+        setStateAt(['user', 'activities', (activity: Activity) => activity.id === 'PLAY', 0, 'active'], true)
     }
 
     const { user, verified } = state
 
-    const playing = getStateAt(['user', 'activities', activity => activity.id === 'PLAY', 0, 'active'])
+    const playing = getStateAt(['user', 'activities', (activity: Activity) => activity.id === 'PLAY', 0, 'active'])
 
     return (
         <div>
+            <h3>Demo of getStateAt()</h3>
             <div>
                 {user.name}, {user.age} {verified && <span> - Verified</span>}
             </div>
             <br />
             <div>
-                <button onClick={verify}>Verify</button>
-                <button onClick={goPlay}>Go play!</button>
+                <button className="btn btn-secondary me-2" onClick={verify}>
+                    Verify
+                </button>
+                <button className="btn btn-secondary" onClick={goPlay}>
+                    Go play!
+                </button>
             </div>
             <br />
             <div>{playing ? <span>Yay, let's play!</span> : <span>Need to work.</span>}</div>
@@ -128,14 +169,14 @@ const Example = () => {
     )
 }
 
-const App = () => {
-    const { state, setState, getStateAt, setStateAt } = useDeepState(initialState)
+const App: React.FC = () => {
+    const { state, setState, getStateAt, setStateAt } = useDeepState<AppState>(initialState)
 
-    const selectUser = selectedUserIndex => {
+    const selectUser = (selectedUserIndex: number): void => {
         setState({ selectedUserIndex })
     }
 
-    const newUser = {
+    const newUser: User = {
         name: 'Frank White',
         age: 24,
         address: {
@@ -148,12 +189,14 @@ const App = () => {
     }
 
     return (
-        <div>
+        <div className="container">
+            <br />
             <h1>use-deep-state</h1>
-            <div className="">Custom React hook to manage a deeply nested state </div>
+            <p>Custom React hook to manage a deeply nested state </p>
+            <p>The whole data table below is stored in a single state object. Click on a user to view their details. This is done by filtering the deep state. </p>
             <br />
             <div className="d-flex">
-                <div className="">
+                <div>
                     <table className="table">
                         <thead>
                             <tr>
@@ -171,11 +214,7 @@ const App = () => {
                                 return (
                                     <tr key={userIndex}>
                                         <td>
-                                            <button
-                                                className="btn-link"
-                                                onClick={() => {
-                                                    selectUser(userIndex)
-                                                }}>
+                                            <button className="btn btn-link" onClick={() => selectUser(userIndex)}>
                                                 {user.name}
                                             </button>
                                         </td>
@@ -192,20 +231,22 @@ const App = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className="" style={{ marginLeft: '1rem' }}>
+                <div style={{ marginLeft: '1rem' }} className="border bg-light p-4 ms-4">
                     <DisplayUser user={state.users[state.selectedUserIndex]} />
                 </div>
             </div>
             <br />
             <div>
+                <h3>Mutating the deep state</h3>
                 <button
+                    className="btn btn-secondary me-2"
                     onClick={() => {
                         setStateAt(['users', state.users.length], newUser)
                     }}>
                     Add User
                 </button>
-                &nbsp;
                 <button
+                    className="btn btn-secondary"
                     onClick={() => {
                         setStateAt(['users', 0, 'address', 'city'], 'Oakland')
                     }}>
@@ -214,32 +255,38 @@ const App = () => {
             </div>
             <br />
             <br />
-            <div className="">
-                <h3>Users below 30 years</h3>
-                <div className="">
-                    <code className="">getStateAt(['users', user => user.age &lt; 30])</code>
+            <div>
+                <h3>Filter: Users below 30 years</h3>
+                <div>
+                    <code>getStateAt(['users', user =&gt; user.age &lt; 30])</code>
                 </div>
                 <br />
-                <div className="">
-                    <code className="">{JSON.stringify(getStateAt(['users', user => user.age < 30]))}</code>
+                <div>
+                    <code>{JSON.stringify(getStateAt(['users', (user: User) => user.age < 30]))}</code>
                 </div>
             </div>
             <br />
-            <div className="">
-                <h3>Cities and states of users who are minors</h3>
-                <div className="">
-                    <code className="">getStateAt(['users', user => user.age &lt; 30, 'address', ['city', 'state']])</code>
+            <div>
+                <h3>Filter: Cities and states of users who are minors</h3>
+                <div>
+                    <code>getStateAt(['users', user =&gt; user.age &lt; 30, 'address', ['city', 'state']])</code>
                 </div>
                 <br />
-                <div className="">
-                    <code className="">{JSON.stringify(getStateAt(['users', user => user.age < 18, 'address', ['city', 'state']]))}</code>
+                <div>
+                    <code>{JSON.stringify(getStateAt(['users', (user: User) => user.age < 18, 'address', ['city', 'state']]))}</code>
                 </div>
             </div>
             <br />
-            <div className="">
+            <div>
                 <Example />
             </div>
+
+            <br />
+            <br />
+            <br />
+            <br />
         </div>
     )
 }
+
 export default App
